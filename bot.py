@@ -1,7 +1,7 @@
 from telegram.ext import Updater, Filters, MessageHandler,CallbackContext
 from key import TOKEN
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
-from openpyexcel import load_workbook
+from openpyxl import load_workbook
 
 
 bd = load_workbook('base.xlsx')
