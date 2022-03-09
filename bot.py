@@ -12,7 +12,7 @@ def main():
         token=TOKEN,
         use_context=True
 )
-
+    text_handler = MessageHandler(Filters.text('да'), sey_no)
     dispatcher = updater.dispatcher
     keybord_handler = MessageHandler(Filters.text('клавиатура'), keybord)
     exo_handler = MessageHandler(Filters.all, exo)
@@ -21,6 +21,7 @@ def main():
     dispatcher.add_handler(hallo_handler)
     dispatcher.add_handler(keybord_handler)
     dispatcher.add_handler(exo_handler)
+    dispatcher.add_handler(text_handler)
 
     updater.start_polling()
     updater.idle()
@@ -30,6 +31,9 @@ def say_hallo(update, context):
     name = update.message.from_user.first_name
     text = update.message.text
     update.message.reply_text(text="привет")
+
+
+
 
 
 def exo(update: Update, context: CallbackContext):
@@ -55,6 +59,12 @@ def keybord(update: Update, context: CallbackContext):
 
         )
     )
+
+
+def sey_no(update: Update, context: CallbackContext):
+    name = update.message.from_user.first_name
+    update.message.reply_text(f"gjrf, {name}.")
+    update.message.reply_sticker()
 
 
 if __name__ == '__main__':
