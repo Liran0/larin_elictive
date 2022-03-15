@@ -3,8 +3,18 @@ from key import TOKEN
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from openpyxl import load_workbook
 
+def insert_sticker(keyword, sticker_id=None, reply_text=None):
+    row = stickers_page.max_row +1
+    sticker_page.cell(row=row, coum=1).value = keyword
+    sticker_page.cell(row=row, coum=1).value = sticker_id
+    sticker_page.cell(row=row, coum=1).value = reply_text
+    bd.save('base.xlsx')
+    stickers[keyword] = sticker_id
+    replies[keyword] = reply_text
 
 bd = load_workbook('base.xlsx')
+
+#for row in range(2, stickers_page.max_row +1):
 
 
 def main():
@@ -69,3 +79,5 @@ def sey_no(update: Update, context: CallbackContext):
 
 if __name__ == '__main__':
     main()
+    print(stickers)
+    insert_sticker('до свидания',reply_text='ldldldl')
