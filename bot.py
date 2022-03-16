@@ -113,7 +113,7 @@ def sey_no(update: Update, context: CallbackContext):
     update.message.reply_text(f"gjrf, {name}.")
     update.message.reply_sticker()
 
-
+#flfv,lv,lv
 if __name__ == '__main__':
     main()
     print(stickers)
