@@ -1,3 +1,4 @@
+
 from telegram.ext import Updater, Filters, MessageHandler,CallbackContext
 from key import TOKEN
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
@@ -94,6 +95,8 @@ def keybord(update: Update, context: CallbackContext):
 
         )
     )
+
+
 def say_smth(update: Update, context: CallbackContext):
     name = update.message.from_user.first_name
     text = update.message.text
@@ -113,7 +116,7 @@ def sey_no(update: Update, context: CallbackContext):
     update.message.reply_text(f"gjrf, {name}.")
     update.message.reply_sticker()
 
-#flfv,lv,lv
+
 if __name__ == '__main__':
     main()
     print(stickers)
