@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from key import TOKEN
-#from data_base_i import stickers, replies
+from data_base_i import stickers, replies
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     bye_handler = MessageHandler(Filters.text('пока'), say_bye)
     keyboard_handler = MessageHandler(Filters.text('Клавиатура, клавиатура'), keyboard)
 
-    # Регестрируем обработчик
+    # Регистрируем обработчик
     dispatcher.add_handler(hello_handler)
     dispatcher.add_handler(keyboard_handler)
     dispatcher.add_handler(text_handler)
