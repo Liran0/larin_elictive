@@ -13,11 +13,13 @@ def main():
     dispatcher = updater.dispatcher
 
     # создаём обработчик
+    meet_handler = MessageHandler(Filters.text('da'), meet)
     echo_handler = MessageHandler(Filters.all, do_echo)
     text_handler = MessageHandler(Filters.text, say_smth)
     hello_handler = MessageHandler(Filters.text('Привет'), say_hello)
     bye_handler = MessageHandler(Filters.text('пока'), say_bye)
     keyboard_handler = MessageHandler(Filters.text('Клавиатура, клавиатура'), keyboard)
+
 
     # Регистрируем обработчик
     dispatcher.add_handler(hello_handler)
@@ -25,6 +27,7 @@ def main():
     dispatcher.add_handler(text_handler)
     dispatcher.add_handler(bye_handler)
     dispatcher.add_handler(echo_handler)
+    dispatcher.add_handler(meet_handler)
 
     updater.start_polling()
     print('Бот успешно запустился, хахахахах')

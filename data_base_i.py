@@ -21,6 +21,31 @@ stickers_page = bd['stickers']
 stickers = {}
 replies = {}
 
+def insert_user(user_id, name, sex, grade):
+    '''
+    вносит нового пользователя в базу данных
+    '''
+    user_page = bd['Users']
+    row = user_page.max_row + 1
+    user_page.cell(row=row, column=1).value = user_id
+    user_page.cell(row=row, column=2).value = name
+    user_page.cell(row=row, column=3).value = sex
+    user_page.cell(row=row, column=3).value = grade
+    bd.save('base.xlsx')
+
+
+def in_database(user: int) -> bool:
+    '''
+    возвращает True, если id пользователь есть в database
+    '''
+    user_page = bd['Users']
+    for row in range(1, user_page.max_row + 1):
+        if user == user_page.cell(row=row, column=1).value:
+            return True
+        return False
+
+
+
 for row in range(1, stickers_page.max_row + 1):
     keyword = stickers_page.cell(row=row, column=1).value
     sticker_id = stickers_page.cell(row=row, column=2).value
