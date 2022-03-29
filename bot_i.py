@@ -92,5 +92,81 @@ def keyboard(update: Update, context: CallbackContext) -> None:
     )
 
 
+def meet(update: Update, context: CallbackContext):
+    '''
+    старт диалога по добавлению пользователя в базу данных
+    будут собраны последовательно
+        id пользователя
+        имя
+        пол
+        класс
+    '''
+    user_id = update.message.from_user.id
+    if in_database(user_id):
+        return
+    ask_name(update, context, user_id)
+
+
+def ask_name(update: Update, context: CallbackContext, user_id):
+    '''
+    спрашиваем имя
+    TODO проверить имя пользователя в телеграме
+    '''
+    update.message.reply_text(
+        'Привет, меня зовут Бот\n' 
+        'А тебя?'
+    )
+    ask_sex(update, context)
+
+
+def ask_sex(update: Update, context: CallbackContext):
+    '''
+    спрашиваем пол, выводим клавиатуру
+    '''
+    name = update.message.text
+    if not name.isalpha():
+        ask_name(update, context)
+    context.user_data['name'] = name
+    buttons = [
+        ['м', 'ж'],
+    ]
+    keys = ReplyKeyboardMarkup(
+        buttons,
+        resize_keyboard=True#размер
+    )
+    update.message.reply_text(
+        text=f'Приятно познакомиться, {name}, укажи пожалуйста свой пол',
+        reply_markup=keys# разметка
+    )
+
+
+def ask_grade(update: Update, context: CallbackContext):
+    '''
+    спрашиваем класс с помощью клавиатуры
+    '''
+    sex = update.message.text
+    if sex != 'м' and sex != 'ж':
+        ask_sex(update, context)
+    context.user_data['sex'] = sex
+    keys = ReplyKeyboardMarkup(
+        grades,
+        resize_keyboard=True  # размер
+    )
+    update.message.reply_text(
+        text='Укажи пожалуйста свой класс',
+        reply_markup=keys
+    )
+
+
+def greet(update: Update, context: CallbackContext):
+    grade = update.message.text
+    if grade in grades:
+        ask_grade(update, context)
+    name = context.user_data['name']
+    sex = context.user_data['sex']
+    user_id = update.message.from_user.id
+    insert_user(user_id, name, sex, grade)
+
+
 if __name__ == '__main__':
     main()
