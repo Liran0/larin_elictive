@@ -113,7 +113,6 @@ def meet(update: Update, context: CallbackContext):
 def ask_name(update: Update, context: CallbackContext, user_id):
     '''
     спрашиваем имя
-    TODO проверить имя пользователя в телеграме
     '''
     update.message.reply_text(
         'Привет, меня зовут Бот\n' 
