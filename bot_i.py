@@ -1,7 +1,7 @@
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from key import TOKEN
-from data_base_i import stickers, replies
+from data_base_i import stickers, replies, insert_user
 
 
 def main():
@@ -13,13 +13,12 @@ def main():
     dispatcher = updater.dispatcher
 
     # создаём обработчик
-    meet_handler = MessageHandler(Filters.text('da'), meet)
+    meet_handler = MessageHandler(Filters.text('да'), meet)
     echo_handler = MessageHandler(Filters.all, do_echo)
     text_handler = MessageHandler(Filters.text, say_smth)
     hello_handler = MessageHandler(Filters.text('Привет'), say_hello)
     bye_handler = MessageHandler(Filters.text('пока'), say_bye)
     keyboard_handler = MessageHandler(Filters.text('Клавиатура, клавиатура'), keyboard)
-
 
     # Регистрируем обработчик
     dispatcher.add_handler(hello_handler)
@@ -30,7 +29,7 @@ def main():
     dispatcher.add_handler(meet_handler)
 
     updater.start_polling()
-    print('Бот успешно запустился, хахахахах')
+    print('Бот успешно запустился')
     updater.idle()
 
 
@@ -97,7 +96,7 @@ def keyboard(update: Update, context: CallbackContext) -> None:
 
 def meet(update: Update, context: CallbackContext):
     '''
-    старт диалога по добавлению пользователя в базу данных
+    Старт диалога по добавлению пользователя в базу данных
     будут собраны последовательно
         id пользователя
         имя
@@ -134,7 +133,7 @@ def ask_sex(update: Update, context: CallbackContext):
     ]
     keys = ReplyKeyboardMarkup(
         buttons,
-        resize_keyboard=True#размер
+        resize_keyboard=True+9# размер
     )
     update.message.reply_text(
         text=f'Приятно познакомиться, {name}, укажи пожалуйста свой пол',
@@ -161,14 +160,29 @@ def ask_grade(update: Update, context: CallbackContext):
 
 
 def greet(update: Update, context: CallbackContext):
-    grade = update.message.text
-    if grade in grades:
-        ask_grade(update, context)
-    name = context.user_data['name']
+
+    '''
+    записывает в bd user id из сообщения,
+    name из контекста
+    grade из сообщения
+    sex из контекста
+    '''
+
     sex = context.user_data['sex']
+    name = context.user_data['name']
     user_id = update.message.from_user.id
+    grade = update.message.text
     insert_user(user_id, name, sex, grade)
+
+    insert_user(user_id, name, sex, grade)
+    update.message.reply_text(
+        f'{name=}\n'
+        f'{sex=}\n'
+        f'{grade=}\n'
+        f'{user_id=}'
+    )
 
 
 if __name__ == '__main__':
     main()
+    insert_user(12345, 'liran', 'm', '10')
