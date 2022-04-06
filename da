@@ -1,0 +1,9 @@
+H, W, h, w = int(input()), int(input()), int(input()), int(input())
+dev
+S = H*W
+c = (H//h)*(W//w) + ((W % w)// h)
+H = H % h
+w, h = h ,w
+o = (H//h)*(W//h)
+print(c+o)
+
