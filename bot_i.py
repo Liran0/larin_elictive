@@ -2,6 +2,7 @@ from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 from key import TOKEN
 from data_base_i import stickers, replies, insert_user
+from telegram.ext import ConversationHandler
 
 
 def main():
@@ -19,6 +20,16 @@ def main():
     hello_handler = MessageHandler(Filters.text('Привет'), say_hello)
     bye_handler = MessageHandler(Filters.text('пока'), say_bye)
     keyboard_handler = MessageHandler(Filters.text('Клавиатура, клавиатура'), keyboard)
+    cenv_hendler= ConversationHandler(
+        entry_points=[text_handler],
+        states={
+            WAIT_NAME: [MessageHandler(Filters.text, ask_sex)]
+            WAIT_SEX: [MessageHandler(Filters.text, ask_grade)]
+            WAIT_GRADE: [MessageHandler(Filters.text, ask_sex)]
+        }
+
+
+    )
 
     # Регистрируем обработчик
     dispatcher.add_handler(hello_handler)
@@ -27,6 +38,7 @@ def main():
     dispatcher.add_handler(bye_handler)
     dispatcher.add_handler(echo_handler)
     dispatcher.add_handler(meet_handler)
+    dispatcher.add_handler(conv_handler)
 
     updater.start_polling()
     print('Бот успешно запустился')
@@ -127,7 +139,7 @@ def ask_sex(update: Update, context: CallbackContext):
     name = update.message.text
     if not name.isalpha():
         ask_name(update, context)
-    context.user_data['name'] = name
+    context.user_data['name'] = name # запоминаем имя
     buttons = [
         ['м', 'ж'],
     ]
@@ -161,12 +173,12 @@ def ask_grade(update: Update, context: CallbackContext):
 
 def greet(update: Update, context: CallbackContext):
 
-    '''
+    """
     записывает в bd user id из сообщения,
     name из контекста
     grade из сообщения
     sex из контекста
-    '''
+    """
 
     sex = context.user_data['sex']
     name = context.user_data['name']
@@ -182,7 +194,9 @@ def greet(update: Update, context: CallbackContext):
         f'{user_id=}'
     )
 
+    return ConversationHandler.END
+
 
 if __name__ == '__main__':
     main()
-    insert_user(12345, 'liran', 'm', '10')
+    insert_user(12345, 'Liran', 'm', '10')
