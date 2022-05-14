@@ -35,8 +35,8 @@ def insert_user(*args):#принимает произвольное количе
 
 
 bd = load_workbook('data_base.xlsx')
-for sheet in bd:
-    print(sheet.title)
+# for sheet in bd:
+#     print(sheet.title)
 stickers_page = bd['stickers']
 user_page = bd['users']
 
@@ -52,4 +52,4 @@ for row in range(1, stickers_page.max_row + 1):
 
 
 if __name__ == '__main__':
-    insert_user(12345, 'Liran', 'ж', '10 o')
+    insert_sticker("dcdc")

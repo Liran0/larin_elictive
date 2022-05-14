@@ -9,9 +9,11 @@ from connect_to_data import stickers, replies, insert_sticker, in_database, inse
 
 grades = ['9н', '9о', '10н', '10о', '11']
 grades_buttons = [
-    [grades[2], grades[3]],
-    [grades[4], grades[5]],
-    [grades[0]],
+
+    [grades[1]],
+    [grades[1], grades[2]],
+    [grades[3], grades[4]],
+
 ]
 
 WAIT_NAME, WAIT_SEX, WAIT_GRADE = range(3)
@@ -30,7 +32,7 @@ def main():
     say_handler = MessageHandler(Filters.text, say_smth)
     new_sticker_handler = MessageHandler(Filters.text('Добавить стикер'), new_sticker)
     text_handler = MessageHandler(Filters.text('/start'), meet)
-    # hello_handler = MessageHandler(Filters.text('Привет'), say_hello)
+    hello_handler = MessageHandler(Filters.text('Привет'), say_hello)
     keyboard_handler = MessageHandler(Filters.text('Клавиатура, клавиатура'), keyboard)
     conv_handler = ConversationHandler(
         entry_points=[text_handler],  # Точка старта
@@ -45,13 +47,14 @@ def main():
     # регестрируем обработчик
     dispatcher.add_handler(conv_handler)
     dispatcher.add_handler(say_handler)
-    # dispatcher.add_handler(hello_handler)
+    dispatcher.add_handler(hello_handler)
     dispatcher.add_handler(keyboard_handler)
     dispatcher.add_handler(new_sticker_handler)
     dispatcher.add_handler(echo_handler)
 
     updater.start_polling()
-    print('Бот успешно запустился')
+    print(f'Ну наконец\n'
+          f'Ты зароботал')
     updater.idle()
 
 
@@ -69,13 +72,13 @@ def do_echo(update: Update, context: CallbackContext) -> None:
 
                               )
 
-#
-# def say_hello(update: Update, context: CallbackContext):
-#     name = update.message.from_user.first_name
-#     update.message.reply_text(text=f'Привет, {name} \n'
-#                                    f' приятно познакомиться с живым человеком\n'
-#                                    f'Я - бот'
-#                               )
+
+def say_hello(update: Update, context: CallbackContext):
+    name = update.message.from_user.first_name
+    update.message.reply_text(text=f'Привет, {name} \n'
+                                   f' приятно познакомиться с живым человеком\n'
+                                   f'Я - бот'
+                              )
 
 
 def say_smth(update: Update, context: CallbackContext):
